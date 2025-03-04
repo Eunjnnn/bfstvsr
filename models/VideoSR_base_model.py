@@ -126,7 +126,7 @@ class VideoSRBaseModel(BaseModel):
         self.optimizer_G.zero_grad()
         if self.times is None:
             self.fake_H = self.netG(self.var_L)
-        elif self.net_base == 'LIIF':
+        elif self.net_base == 'VideoINR':
             self.fake_H = self.netG(self.var_L, self.times, self.scale)
         elif self.net_base == 'MoTIF':
             self.fake_H, flow, flow_GT = self.netG(self.var_L, self.real_H, self.times, self.scale, use_GT = use_GT, flows = self.flows)
@@ -146,7 +146,7 @@ class VideoSRBaseModel(BaseModel):
             for idx in range(len(self.times)):
                 l_pix += self.l_pix_w * self.cri_pix(self.fake_H[idx], self.real_H[:, idx])
         
-        if self.net_base == 'LIIF':
+        if self.net_base == 'VideoINR':
             l_pix*= (4./(self.fake_H[0].shape[3]/self.var_L.shape[3]))**2
         else:
             l_pix*= (4./(self.fake_H.shape[3]/self.var_L.shape[3]))**2
@@ -176,9 +176,15 @@ class VideoSRBaseModel(BaseModel):
                 #self.fake_H = self.fake_H.unsqueeze(1).repeat(1,2,1,1,1)
             elif self.times is None:
                 self.fake_H = self.netG(self.var_L)
-            elif self.net_base == 'LIIF':
+            elif self.net_base == 'VideoINR':
                 # self.scale=1
                 self.fake_H = self.netG(self.var_L, self.times, self.scale, test = False)
+            elif self.net_base == 'MoTIF':
+                self.fake_H, flow, flow_GT = self.netG(self.var_L, self.real_H, self.times[:3], self.scale, use_GT = False, iter = 4)
+                if len(self.times) != 3:
+                    for l in range(3, len(self.times), 3):
+                        tmp, flow, flow_GT = self.netG(self.var_L, None, self.times[l:l+3], self.scale, use_GT = False, iter = 4)
+                        self.fake_H = torch.cat((self.fake_H,tmp), 0)
             elif self.net_base == 'bfstvsr':
                 self.fake_H, flow, flow_GT = self.netG(self.var_L, self.real_H, self.times[:3], self.scale, use_GT = False, iter = 4)
                 if len(self.times) != 3:

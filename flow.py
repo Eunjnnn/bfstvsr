@@ -181,7 +181,7 @@ def main():
             
             
             real_H = model.real_H[:,1:-1].reshape(b*9,3,4*h,4*w)
-            if opt['network_G']['which_model_G'] == 'LIIF':
+            if opt['network_G']['which_model_G'] == 'VideoINR':
                 fake_H = torch.stack(model.fake_H,1)
             else:
                 fake_H = model.fake_H

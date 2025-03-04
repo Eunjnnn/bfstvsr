@@ -190,7 +190,7 @@ def main(opt):
             
             n = model.real_H.shape[1] - 2
             real_H = model.real_H[:,1:-1].reshape(b*n,3,H,W)
-            if opt['network_G']['which_model_G'] == 'LIIF':
+            if opt['network_G']['which_model_G'] == 'VideoINR':
                 fake_H = torch.stack(model.fake_H,1)
                 fake_H = fake_H[:, :, :, 0:H, 0:W].reshape(b*n,3,H,W)
             elif opt['network_G']['which_model_G'] == 'Ours':
