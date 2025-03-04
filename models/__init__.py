@@ -6,8 +6,6 @@ def create_model(opt):
     model = opt['model']
     if model == 'VideoSR_base':
         from .VideoSR_base_model import VideoSRBaseModel as M
-    elif model == 'VideoSR_flow':
-        from .VideoSR_flow_model import VideoSRFlowModel as M
     else:
         raise NotImplementedError('Model [{:s}] not recognized.'.format(model))
     m = M(opt)

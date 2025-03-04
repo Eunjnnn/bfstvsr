@@ -421,7 +421,7 @@ class LunaTokis(nn.Module):
 
         ### load raft
         self.flow_predictor = RAFT(args)
-        ckpt = torch.load("/saved_checkpoints/bfstvsr.pth") # ['model']
+        ckpt = torch.load("saved_checkpoints/bfstvsr.pth") # ['model']
         keys = list(ckpt.keys())
         for key in keys:
             tmp = key.replace("flow_predictor.", "")
@@ -433,16 +433,8 @@ class LunaTokis(nn.Module):
         self.fwarp = Softsplat()
         self.fwarp_max = Softsplat_Max()
         self.fwarp_count = Softsplat_Count()
-        self.bwarp = BackWarp(clip=True)
 
         self.unfold = True
-        self.norm_gamma = nn.Parameter(torch.ones(1, 3, 1), requires_grad=True)
-        self.norm_beta = nn.Parameter(torch.zeros(1, 3, 1), requires_grad=True)
-
-        ### Guassian kernel
-        self.g_filter = nn.Parameter(torch.cuda.FloatTensor([[1. / 16., 1. / 8., 1. / 16.], [1. / 8., 1. / 4., 1. / 8.],
-                                                             [1. / 16., 1. / 8., 1. / 16.]]).reshape(1, 1, 1, 3, 3),
-                                     requires_grad=False)
 
         ### model setting
         channel = 64
@@ -468,7 +460,7 @@ class LunaTokis(nn.Module):
         self.encoder = ZSM_encoder(channel)
         
         self.polar_coord = False
-        self.flow_imnet = STBSplineMapper(in_features=channel+2, out_features=3 * self.groups, hidden_features=[64, 64], hidden_layers=1, bspline_features=64, polar_coord=self.polar_coord)
+        self.flow_imnet = STBSplineMapper(in_features=channel+2, out_features=3 * self.groups, hidden_features=[64, 64, 256], hidden_layers=2, bspline_features=64, polar_coord=self.polar_coord)
         
         self.imnet = STFSFourierMapper(in_features=64, out_features=64, hidden_features=[64, 64, 256], hidden_layers=2, fourier_features=64)
         
@@ -494,7 +486,6 @@ class LunaTokis(nn.Module):
                                    outermost_linear=True)
         # self.trans = False
         self.alpha = nn.Parameter(torch.ones(1) * -20., requires_grad=True)
-        self.shuffle = nn.Conv2d(channel, channel, 1, 1, 0, bias=True, groups=1)
 
     def forward(self, x, input_target_frames, target_t, scale=None, rank=0, train_idx=0, use_GT=True, iter=12, flows=None):
 
