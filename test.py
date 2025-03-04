@@ -282,8 +282,9 @@ def main(opt):
                     logger.info('Saving models and training states.')
                     model.save(current_step)
                     model.save_training_state(epoch, current_step)'''
-        np.save("/psnrs/"+opt["name"]+".npy", psnrs_all)
-        np.save("/psnrs/"+opt["name"]+"_ssim.npy", ssim_all)
+        util.mkdirs("psnrs")
+        np.save("psnrs/"+opt["name"]+".npy", psnrs_all)
+        np.save("psnrs/"+opt["name"]+"_ssim.npy", ssim_all)
 
     if rank <= 0:
         logger.info('Saving the final model.')
