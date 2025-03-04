@@ -81,7 +81,7 @@ class AdobeDataset(data.Dataset):
         else:
             raise ValueError('Wrong data type: {}'.format(self.data_type))
         
-        with open('=/data/adobe240fps_folder_train.txt') as t:
+        with open('data/adobe240fps_folder_train.txt') as t:
             video_list = t.readlines()
             
         self.file_list = []

@@ -4,12 +4,12 @@ use_tb_logger: false #true
 model: VideoSR_base
 distortion: sr
 scale: 4
-gpu_ids: [2]
+gpu_ids: [0]
 
 #### datasets
 datasets:
   train:
-    name: Adobe
+    name: Adobe # Adobe & Adobe_a
     mode: Adobe # Adobe & Adobe_a
     interval_list: [1]
     random_reverse: true #false
@@ -46,9 +46,6 @@ path:
   pretrain_model_G: ~
   strict_load: true #true #
   resume_state:  ~
-  models: /experiments/save_checkpoint/
-  training_state: /experiments/save_checkpoint/
-  root: ./
 
 #### training settings: learning rate scheme, loss
 train:

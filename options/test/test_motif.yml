@@ -4,7 +4,7 @@ use_tb_logger: false #true
 model: VideoSR_base
 distortion: sr
 scale: 4
-gpu_ids: [4]
+gpu_ids: [0]
 
 #### datasets
 datasets:
@@ -44,12 +44,9 @@ network_G:
 
 #### path
 path:
-  pretrain_model_G: /saved_checkpoints/motif.pth
+  pretrain_model_G: saved_checkpoints/motif.pth
   strict_load: true #true #
   resume_state: ~
-  models: ./saved_checkpoints/
-  training_state: ./saved_checkpoints/
-  root: ./
 
 #### training settings: learning rate scheme, loss
 train:

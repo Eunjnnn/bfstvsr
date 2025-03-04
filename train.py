@@ -3,7 +3,6 @@ The code is modified from the implementation of Zooming Slow-Mo:
 https://github.com/Mukosame/Zooming-Slow-Mo-CVPR-2020
 '''
 import os
-import os
 
 import numpy as np
 import torch
@@ -17,12 +16,10 @@ import torch.distributed as dist
 import torch.multiprocessing as mp
 from data.data_sampler import DistIterSampler
 
-import option
-from utilss import util
+import options.option as option
+from utils import util
 from data import create_dataloader, create_dataset
 from models import create_model
-from pdb import set_trace as bp
-
 
 def init_dist(backend='nccl', **kwargs):
     ''' initialization for distributed training'''
@@ -39,7 +36,7 @@ def init_dist(backend='nccl', **kwargs):
 def main():
     #### options
     parser = argparse.ArgumentParser()
-    parser.add_argument('-opt', type=str, default='./options/train/bfstvsr.yml', help='Path to option YAML file.')
+    parser.add_argument('-opt', type=str, default='options/train/bfstvsr.yml', help='Path to option YAML file.')
     parser.add_argument('--launcher', choices=['none', 'pytorch'], default='none', help='job launcher')
     parser.add_argument('--local_rank', type=int, default=0)
     args = parser.parse_args()
@@ -68,16 +65,17 @@ def main():
 
     #### mkdir and loggers
     if rank <= 0:  # normal training (rank -1) OR distributed training (rank 0)
-        #if resume_state is None:
         print(opt['path']['experiments_root'])
-        # util.mkdir_and_rename(
-        #     opt['path']['experiments_root'])  # rename experiment folder if exists
-        util.mkdirs((path for key, path in opt['path'].items() if not key == 'experiments_root'
-                        and 'pretrain_model' not in key and 'resume' not in key))
+        if resume_state is None or ('arbi' in opt['name'] and resume_state is not None):
+        # if resume_state is None:
+            util.mkdir_and_rename(
+                    opt['path']['experiments_root'])  # rename experiment folder if exists
+            util.mkdirs((path for key, path in opt['path'].items() if not key == 'experiments_root'
+                            and 'pretrain_model' not in key and 'resume' not in key))
 
-        # config loggers. Before it, the log will not work
+            # config loggers. Before it, the log will not work
         util.setup_logger('base', opt['path']['log'], 'train_' + opt['name'], level=logging.INFO,
-                        screen=True, tofile=True)
+                            screen=True, tofile=True)
         logger = logging.getLogger('base')
         logger.info(option.dict2str(opt))
         # tensorboard logger
@@ -89,7 +87,7 @@ def main():
                 logger.info(
                     'You are using PyTorch {}. Tensorboard will use [tensorboardX]'.format(version))
                 from tensorboardX import SummaryWriter
-            tb_logger = SummaryWriter(log_dir='../tb_logger/' + opt['name'])
+            tb_logger = SummaryWriter(log_dir='/data2/hjkim/C-STVSR-tps/experiments/Ours_fb_nerf_param/' + opt['name'])
     else:
         util.setup_logger('base', opt['path']['log'], 'train', level=logging.INFO, screen=True)
         logger = logging.getLogger('base')

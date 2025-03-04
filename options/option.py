@@ -2,7 +2,7 @@ import os
 import os.path as osp
 import logging
 import yaml
-from utilss.util import OrderedYaml
+from utils.util import OrderedYaml
 Loader, Dumper = OrderedYaml()
 
 
@@ -42,12 +42,13 @@ def parse(opt_path, is_train=True):
     for key, path in opt['path'].items():
         if path and key in opt['path'] and key != 'strict_load':
             opt['path'][key] = osp.expanduser(path)
-    opt['path']['root'] = "/home/BF-STVSR/"#osp.abspath(osp.join(__file__, osp.pardir, osp.pardir, osp.pardir))
+    opt['path']['root'] = osp.abspath(osp.join(__file__, osp.pardir, osp.pardir)) # opt['path']['root'] = osp.abspath(osp.join(__file__, osp.pardir, osp.pardir, osp.pardir))
+
     if is_train:
         experiments_root = os.path.join(opt['path']['root'], 'experiments', opt['name'])
         opt['path']['experiments_root'] = experiments_root
-        # opt['path']['models'] = os.path.join(experiments_root, 'models')
-        # opt['path']['training_state'] = os.path.join(experiments_root, 'training_state')
+        opt['path']['models'] = os.path.join(experiments_root, 'models')
+        opt['path']['training_state'] = os.path.join(experiments_root, 'training_state')
         opt['path']['log'] = experiments_root
         opt['path']['val_images'] = os.path.join(experiments_root, 'val_images')
 
@@ -107,9 +108,8 @@ def check_resume(opt, resume_iter):
                 'pretrain_model_D', None) is not None:
             logger.warning('pretrain_model path will be ignored when resuming training.')
 
-        opt['path']['pretrain_model_G'] = osp.join(opt['path']['models'],
-                                                   '{}_G.pth'.format(resume_iter))
-        print(opt['path']['pretrain_model_G'])
+        #opt['path']['pretrain_model_G'] = osp.join(opt['path']['models'],
+        #                                           '{}_G.pth'.format(resume_iter))
         logger.info('Set [pretrain_model_G] to ' + opt['path']['pretrain_model_G'])
         if 'gan' in opt['model']:
             opt['path']['pretrain_model_D'] = osp.join(opt['path']['models'],

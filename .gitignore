@@ -1,0 +1,9 @@
+__pycache__
+/**/__pycache__/
+/experiments*/
+*.txt
+*.png
+/saved_checkpoints/
+/test_img/
+/psnrs/
+/ckpt/

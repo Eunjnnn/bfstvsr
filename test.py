@@ -17,12 +17,10 @@ import torch.distributed as dist
 import torch.multiprocessing as mp
 from data.data_sampler import DistIterSampler
 
-import option
-from utilss import util
+import options.option as option
+from utils import util
 from data import create_dataloader, create_dataset
 from models import create_model
-from pdb import set_trace as bp
-import torchvision
 
 
 def init_dist(backend='nccl', **kwargs):
@@ -300,7 +298,7 @@ def main(opt):
 if __name__ == '__main__':
     #### options
     parser = argparse.ArgumentParser()
-    parser.add_argument('-opt', type=str, default='/options/test/test_bfstvsr.yml', help='Path to option YAML file.')
+    parser.add_argument('-opt', type=str, default='options/test/test_bfstvsr.yml', help='Path to option YAML file.')
     parser.add_argument('--launcher', choices=['none', 'pytorch'], default='none',
                         help='job launcher')
     parser.add_argument('--local_rank', type=int, default=0)
@@ -312,10 +310,8 @@ if __name__ == '__main__':
     t_scales = [6]
     for s in s_scales:
         for t in t_scales:
-            if s == 4 and  t == 6:
-                continue
             opt['scale'] = s
             opt['datasets']['train']["scale"] = s
             opt['datasets']['train']['time'] = t
-            opt["name"] = "BFSTVSR"+str(s)+"x_t"+str(t)+"_12"
+            opt["name"] = "BFSTVSR_"+str(s)+"x_t"+str(t)+"x"
             main(opt)

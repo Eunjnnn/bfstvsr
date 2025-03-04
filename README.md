@@ -1,6 +1,6 @@
-# BF-STVSR: B-Splines and Fourier-Best Friends for High Fidelity Spatial-Temporal Video Super-Resolution
+# [CVPR 2025] BF-STVSR: B-Splines and Fourier-Best Friends for High Fidelity Spatial-Temporal Video Super-Resolution
 
-Authors : Eunjin Kim*, Hyeonjin Kim*, Kyong Hwan Jin, [Jaejun Yoo](https://scholar.google.co.kr/citations?hl=en&user=7NBlQw4AAAAJ)
+Authors : Eunjin Kim*, [Hyeonjin Kim](https://scholar.google.co.kr/citations?user=LV30lG4AAAAJ&hl=ko&oi=ao)*, Kyong Hwan Jin, [Jaejun Yoo](https://scholar.google.co.kr/citations?hl=en&user=7NBlQw4AAAAJ)
 
 (* : equal contribution)
 
@@ -8,17 +8,39 @@ Authors : Eunjin Kim*, Hyeonjin Kim*, Kyong Hwan Jin, [Jaejun Yoo](https://schol
 ### [News]
 * Our **BF-STVSR** is accepted by **CVPR 2025** 🎉!
 
-## Abstract
-> Enhancing low-resolution, low-frame-rate videos to high-resolution, high-frame-rate quality is essential for a seamless user experience, motivating advancements in Continuous Spatial-Temporal Video Super Resolution (C-STVSR). While prior methods employ Implicit Neural Representation (INR) for continuous encoding, they often struggle to capture the complexity of video data, relying on simple coordinate concatenation and pre-trained optical flow network for motion representation. Interestingly, we find that adding position encoding, contrary to common observations, does not improve-and even degrade performance. This issue becomes particularly pronounced when combined with pre-trained optical flow networks, which can limit the model's flexibility. To address these issues, we propose BF-STVSR, a C-STVSR framework with two key modules tailored to better represent spatial and temporal characteristics of video: 1) B-spline Mapper for smooth temporal interpolation, and 2) Fourier Mapper for capturing dominant spatial frequencies. Our approach achieves state-of-the-art PSNR and SSIM performance, showing enhanced spatial details and natural temporal consistency.
-
 ## Overview of BF-STVSR
 
 <img src = "./asset/overview.png" width="100%" height="100%"/>
 
 ## Environmental Setup
 
-We follow the environment setting from [MoTIF](https://github.com/sichun233746/MoTIF) and [VideoINR](https://github.com/Picsart-AI-Research/VideoINR-Continuous-Space-Time-Super-Resolution).
+The code is tested on:
 
+- Python 3.8
+- Cuda 11.3
+- [Deformable Convolution v2](https://arxiv.org/abs/1811.11168). Following [Zooming Slowmo](https://github.com/Mukosame/Zooming-Slow-Mo-CVPR-2020), we adopt [CharlesShang's implementation](https://github.com/CharlesShang/DCNv2) in the submodule.
+- We build DCNv2 module using [DCNv2_latest repository](https://github.com/lucasjinreal/DCNv2_latest) and alt_cuda_corr module from [RAFT](https://github.com/princeton-vl/RAFT/tree/master/alt_cuda_corr).
+
+```
+conda create -y -n bfstvsr python=3.8
+conda activate bfstvsr
+conda install -y libxcrypt gxx_linux-64=7 cxx-compiler ninja -c conda-forge
+
+conda install -y cudatoolkit=11.3 nvidia/label/cuda-11.3.1::cuda
+pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu113
+pip install opencv-python pillow tqdm pyyaml lmdb scipy tensorboard einops
+
+### cupy installation for softsplat ###
+pip install --pre cupy-cuda113 
+
+### Go to the DCNv2_latest directory ###
+cd models/DCNv2_latest
+python setup.py install
+
+### Go to the alt_cuda_corr directory ###
+cd ../alt_cuda_corr
+python setup.py install
+```
 
 ## Citation
 If you find this repository useful for your research, please cite the following work.
@@ -30,3 +52,7 @@ If you find this repository useful for your research, please cite the following 
   year={2025}
 }
 ```
+
+## Acknowledgement
+
+This repository heavily depends on [DCNv2_latest](https://github.com/lucasjinreal/DCNv2_latest), [RAFT](https://github.com/princeton-vl/RAFT), [VideoINR](https://github.com/Picsart-AI-Research/VideoINR-Continuous-Space-Time-Super-Resolution/tree/main), and [MoTIF](https://github.com/sichun233746/MoTIF). Thank you for sharing their implementations.

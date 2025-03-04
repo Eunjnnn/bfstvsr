@@ -4,7 +4,7 @@ use_tb_logger: false #true
 model: VideoSR_base
 distortion: sr
 scale: 4
-gpu_ids: [6]
+gpu_ids: [0]
 
 #### datasets
 datasets:
@@ -14,7 +14,7 @@ datasets:
     interval_list: [1]
     random_reverse: false #false
     border_mode: false
-    dataroot_GT: /path/where/data/GoPro/
+    dataroot_GT: /path/where/data/GoPro/test
     dataroot_LQ: /path/where/data/GoPro/
     cache_keys: data/Vimeo7_train_keys.pkl
 
@@ -41,16 +41,12 @@ network_G:
   mid_RBs: 0
   back_RBs: 40
   HR_in: false
-  setting: 5
 
 #### path
 path:
-  pretrain_model_G: /saved_checkpoints/bfstvsr.pth
+  pretrain_model_G: saved_checkpoints/bfstvsr.pth
   strict_load: true #true #
   resume_state: ~
-  models: ./saved_checkpoints/
-  training_state: ./saved_checkpoints/
-  root: ./
 
 #### training settings: learning rate scheme, loss
 train:
