@@ -18,7 +18,6 @@ try:
     import mc  # import memcached
 except ImportError:
     pass
-from pdb import set_trace as bp
 
 try:
     sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

@@ -12,7 +12,6 @@ try:
     from models.modules.DCNv2.dcn_v2 import DCN_sep
 except ImportError:
     raise ImportError('Failed to import DCNv2 module.')
-from pdb import set_trace as bp
 from models.modules.SIREN import Siren
 from models.modules.warplayer import warpgrid
 

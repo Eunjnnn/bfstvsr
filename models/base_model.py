@@ -3,7 +3,6 @@ from collections import OrderedDict
 import torch
 import torch.nn as nn
 from torch.nn.parallel import DistributedDataParallel
-from pdb import set_trace as bp
 
 class BaseModel():
     def __init__(self, opt):

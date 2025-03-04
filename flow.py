@@ -17,7 +17,6 @@ import option
 from utils import util
 from data import create_dataloader, create_dataset
 from models import create_model
-from pdb import set_trace as bp
 
 
 def init_dist(backend='nccl', **kwargs):

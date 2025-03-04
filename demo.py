@@ -9,7 +9,6 @@ from tqdm import tqdm
 import torch
 import models.modules.bfstvsr as bfstvsr
 
-from pdb import set_trace as bp
 from data.util import imresize_np
 
 parser = argparse.ArgumentParser()

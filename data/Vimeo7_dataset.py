@@ -16,7 +16,6 @@ try:
     import mc  # import memcached
 except ImportError:
     pass
-from pdb import set_trace as bp
 
 logger = logging.getLogger('base')
 
