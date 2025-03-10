@@ -70,7 +70,7 @@ class AdobeDataset(data.Dataset):
         else:
             cache_keys = 'Vimeo7_train_keys.pkl'
         logger.info('Using cache keys - {}.'.format(cache_keys))
-        self.paths_GT = pickle.load(open('BF-STVSR/{}'.format(cache_keys), 'rb'))
+        self.paths_GT = pickle.load(open('{}'.format(cache_keys), 'rb'))
     
         #assert self.paths_GT, 'Error: GT path is empty.'
 
