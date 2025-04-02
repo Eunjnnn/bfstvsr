@@ -19,7 +19,7 @@ def define_G(opt):
                             back_RBs=opt_net['back_RBs'])   
     elif which_model == 'MoTIF':
         netG = MoTIF.LunaTokis()
-    elif which_model == 'bfstvsr':
+    elif which_model == 'bfstvsr' or which_model == 'bfstvsr_w_flow':
         netG = bfstvsr.LunaTokis() 
 
     elif which_model == 'ZSM':

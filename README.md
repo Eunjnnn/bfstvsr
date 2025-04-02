@@ -8,11 +8,16 @@ Authors : Eunjin Kim*, [Hyeonjin Kim](https://scholar.google.co.kr/citations?use
 ### [News]
 * Our **BF-STVSR** is accepted by **CVPR 2025** 🎉!
 
+## Abstract
+  > While prior methods in Continuous Spatial-Temporal Video Super-Resolution (C-STVSR) employ Implicit Neural Representation (INR) for continuous encoding, they often struggle to capture the complexity of video data, relying on simple coordinate concatenation and pre-trained optical flow networks for motion representation. Interestingly, we find that adding position encoding, contrary to common observations, does not improve--and even degrades--performance. This issue becomes particularly pronounced when combined with pre-trained optical flow networks, which can limit the model's flexibility. To address these issues, we propose BF-STVSR, a C-STVSR framework with two key modules tailored to better represent spatial and temporal characteristics of video: 1) B-spline Mapper for smooth temporal interpolation, and 2) Fourier Mapper for capturing dominant spatial frequencies. Our approach achieves state-of-the-art in various metrics, including PSNR and SSIM, showing enhanced spatial details and natural temporal consistency. 
+
 ## Overview of BF-STVSR
 
 <img src = "./asset/overview.png" width="100%" height="100%"/>
 
-## Environmental Setup
+## Usage
+
+### Environmental Setup
 
 The code is tested on:
 
@@ -41,6 +46,39 @@ python setup.py install
 cd ../alt_cuda_corr
 python setup.py install
 ```
+
+### Dataset
+#### Train
+We prepare the training dataset following [VideoINR](https://github.com/Picsart-AI-Research/VideoINR-Continuous-Space-Time-Super-Resolution?tab=readme-ov-file#preparing-dataset) respository.
+
+#### Test
+To make low-resolution videos, we use bicubic downsampling to the desired scale.
+```
+python data/resize.py
+```
+
+### Training
+```
+# train BF-STVSR on Adobe dataset
+python train.py -opt options/train/bfstvsr.yml
+
+# train BF-STVSR on Adobe dataset with optical flow supervision
+python train.py -opt options/train/bfstvsr_w_flow.yml
+```
+
+### Testing
+Evaluate PSNR and SSIM.
+```
+# test BF-STVSR on GoPro dataset
+python test.py -opt options/test/test_bfstvsr.yml
+
+# test BF-STVSR with optical flow supervision on GoPro dataset
+python test.py -opt options/test/test_bfstvsr_w_flow.yml
+```
+
+For video quality metrics, please refer following [README](vid_metric/README.md).
+
+
 
 ## Citation
 If you find this repository useful for your research, please cite the following work.

@@ -193,7 +193,7 @@ def main(opt):
             if opt['network_G']['which_model_G'] == 'VideoINR':
                 fake_H = torch.stack(model.fake_H,1)
                 fake_H = fake_H[:, :, :, 0:H, 0:W].reshape(b*n,3,H,W)
-            elif opt['network_G']['which_model_G'] == 'Ours':
+            elif opt['network_G']['which_model_G'] == 'MoTIF' or ('bfstvsr' in opt['network_G']['which_model_G']):
                 fake_H = model.fake_H
                 fake_H = fake_H[:, :, :, 0:H, 0:W].reshape(b*n,3,H,W)
             else:

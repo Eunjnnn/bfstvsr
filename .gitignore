@@ -7,3 +7,5 @@ __pycache__
 /test_img/
 /psnrs/
 /ckpt/
+.DS_Store
+/**/.DS_Store/

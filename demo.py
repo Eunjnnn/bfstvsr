@@ -13,12 +13,10 @@ from data.util import imresize_np
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--space_scale', type=int, default=4, help="upsampling space scale")
-parser.add_argument('--time_scale', type=int, default=6, help="upsampling time scale")
+parser.add_argument('--time_scale', type=int, default=8, help="upsampling time scale")
 parser.add_argument('--data_path', type=str, required=True, help="data path for testing")
-parser.add_argument('--out_path_lr', type=str, default="./output/LR/", help="output path (Low res image)")
-parser.add_argument('--out_path_bicubic', type=str, default="./output/Bicubic/", help="output path (bicubic upsampling)")
-parser.add_argument('--out_path_ours', type=str, default="./output/BFSTVSR/", help="output path (VideoINR)")
-parser.add_argument('--model_path', type=str, default="./saved_checkpoints/bfstvsr.pth", help="model parameter path")
+parser.add_argument('--out_path_ours', type=str, default="output/BFSTVSR/", help="output path (VideoINR)")
+parser.add_argument('--model_path', type=str, default="saved_checkpoints/bfstvsr.pth", help="model parameter path")
 opt = parser.parse_known_args()[0]
 
 device = 'cuda'
@@ -51,9 +49,9 @@ def single_forward(model, imgs_in, space_scale, time_scale):
 
 os.makedirs(opt.out_path_ours, exist_ok=True)
 
-path_list = [os.path.join(opt.data_path, name) for name in sorted(os.listdir(opt.data_path))[0:2:]]
+path_list = [os.path.join(opt.data_path, name) for name in sorted(os.listdir(opt.data_path))]
 print(path_list)
-#exit()
+# exit()
 index = 0
 for ind in tqdm(range(len(path_list) - 1)):
 
@@ -82,7 +80,7 @@ for ind in tqdm(range(len(path_list) - 1)):
     output = single_forward(model, imgs, opt.space_scale, opt.time_scale)
     #print((abs(output[0][0].detach().cpu().numpy() - np.transpose(img1_[:1024, :, [2, 1, 0]]/255., (2,0,1)))).mean())
     '''
-    Save results of VideoINR and bicubic up-sampling.
+    Save results of bfstvsr.
     '''
     for out_ind in range(len(output)):
 

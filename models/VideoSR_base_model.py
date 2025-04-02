@@ -133,6 +133,8 @@ class VideoSRBaseModel(BaseModel):
             flow_l = self.cri_pix(flow, flow_GT)
         elif self.net_base == 'bfstvsr':
             self.fake_H, flow, flow_GT = self.netG(self.var_L, self.real_H, self.times, self.scale, use_GT = use_GT, flows = self.flows)
+        elif self.net_base == 'bfstvsr_w_flow':
+            self.fake_H, flow, flow_GT = self.netG(self.var_L, self.real_H, self.times, self.scale, use_GT = use_GT, flows = self.flows)
             flow_l = self.cri_pix(flow, flow_GT)
         else:
             self.fake_H = self.netG(self.var_L, self.times, self.scale)
@@ -151,7 +153,9 @@ class VideoSRBaseModel(BaseModel):
         else:
             l_pix*= (4./(self.fake_H.shape[3]/self.var_L.shape[3]))**2
         
-        if  ('MoTIF' in self.net_base or 'bfstvsr' in self.net_base):
+        if self.net_base == 'bfstvsr':
+            l_pix.backward()
+        elif self.net_base == 'MoTIF' or self.net_base == 'bfstvsr_w_flow':
             (l_pix + 0.1*flow_l*(ratio)).backward()
         else:
             l_pix.backward()
@@ -162,8 +166,10 @@ class VideoSRBaseModel(BaseModel):
         self.log_dict['l_pix'] = l_pix.item()
         self.lrs.append(l_pix.item())
         self.log_dict['l_pixs'] = np.mean(self.lrs)
-        if  ('MoTIF' in self.net_base or 'bfstvsr' in self.net_base):
+        if  self.net_base == 'MoTIF' or self.net_base == 'bfstvsr_w_flow':
             self.log_dict['flow_l'] = flow_l.item()
+            self.log_dict['GT'] = use_GT
+        else:
             self.log_dict['GT'] = use_GT
         torch.cuda.empty_cache()
 
@@ -185,7 +191,7 @@ class VideoSRBaseModel(BaseModel):
                     for l in range(3, len(self.times), 3):
                         tmp, flow, flow_GT = self.netG(self.var_L, None, self.times[l:l+3], self.scale, use_GT = False, iter = 4)
                         self.fake_H = torch.cat((self.fake_H,tmp), 0)
-            elif self.net_base == 'bfstvsr':
+            elif 'bfstvsr' in self.net_base:
                 self.fake_H, flow, flow_GT = self.netG(self.var_L, self.real_H, self.times[:3], self.scale, use_GT = False, iter = 4)
                 if len(self.times) != 3:
                     for l in range(3, len(self.times), 3):

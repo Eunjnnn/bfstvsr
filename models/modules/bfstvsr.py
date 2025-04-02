@@ -534,7 +534,6 @@ class LunaTokis(nn.Module):
         '''
         feat: F_0_L, F_1_L
         residual: F_01_L
-        flow_feat: [flow, psies, ref_start_durations]
 	    '''
         residual = feat[:, feat.shape[1] // 2].reshape(B, -1, H, W)
         #feat = feat.reshape(N,B,3,-1,H,W).permute(1,0,2,3,4,5).reshape(B*N,3,-1,H,W)
@@ -585,7 +584,6 @@ class LunaTokis(nn.Module):
                 '''
                 to_be_warp (LR)
                     warpped_feat = LR feat (F_0_L, F_1_L)
-                    flow_feat = LR output of flow encoder (T_0_L, T_1_L)
                     feat_coord = LR coord
                     residual = LR F_01_L
                 '''
@@ -597,7 +595,6 @@ class LunaTokis(nn.Module):
                 warped = F.grid_sample(to_be_warp, coord_.flip(-1).unsqueeze(1), mode='nearest', align_corners=False)[:, :, 0, :]
                 '''
                 q_feat = HR feat (F_0_L, F_1_L)
-                q_flow_feat = HR output of flow encoder (T_0_L, T_1_L)
                 q_coord = HR coord
                 q_residual = HR F_01_L
                 '''
