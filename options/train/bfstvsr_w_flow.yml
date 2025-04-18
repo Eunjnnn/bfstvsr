@@ -1,5 +1,5 @@
 #### general settings
-name: BFSTVSR
+name: BFSTVSR_w_flow
 use_tb_logger: false #true
 model: VideoSR_base
 distortion: sr
@@ -15,7 +15,7 @@ datasets:
     random_reverse: true #false
     border_mode: false
     dataroot_GT: /path/of/adobe/train/
-    dataroot_LQ: /path/of/adobe/train/
+    dataroot_LQ: /path/of/adobe/train_LR/
     cache_keys: data/Vimeo7_train_keys.pkl
 
     N_frames: 7

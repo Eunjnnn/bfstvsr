@@ -123,7 +123,7 @@ class LPIPS(nn.Module):
             if pretrained:
                 if model_path is None:
                     # model_path = "checkpoints/FloLPIPS.pth"
-                    model_path = "./checkpoints/alex.pth"
+                    model_path = "./checkpoints/alex.pth"       # https://github.com/danier97/flolpips/tree/main/weights/v0.1
                 print("verbose : ", verbose)
                 if verbose:
                     print("Loading model from: %s" % model_path)

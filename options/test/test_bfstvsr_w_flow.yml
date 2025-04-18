@@ -1,5 +1,5 @@
 #### general settings
-name: test_bfstvsr
+name: test_bfstvsr_w_flow
 use_tb_logger: false #true
 model: VideoSR_base
 distortion: sr

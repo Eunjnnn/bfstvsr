@@ -67,7 +67,8 @@ python train.py -opt options/train/bfstvsr_w_flow.yml
 ```
 
 ### Testing
-Evaluate PSNR and SSIM.
+Download the checkpoint from [link](https://drive.google.com/drive/folders/1s8ciKJ4ccnumqaVw8_zvHvTh7TuULF2F?usp=sharing) and put it in the saved_chekpoints folder. 
+You can evaluate PSNR and SSIM with following command.
 ```
 # test BF-STVSR on GoPro dataset
 python test.py -opt options/test/test_bfstvsr.yml

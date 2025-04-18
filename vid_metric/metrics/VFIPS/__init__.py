@@ -10,7 +10,7 @@ from .utils import *
 
 def calc_vfips(dis_dir, ref_dir):
     moduleNetwork = networks.get_model("multiscale_v33")
-    moduleNetwork.load_state_dict(torch.load("./checkpoints/VFIPS.pytorch"))
+    moduleNetwork.load_state_dict(torch.load("./checkpoints/VFIPS.pytorch"))    # https://github.com/hqqxyy/VFIPS/tree/main/exp/eccv_ms_multiscale_v33
 
     moduleNetwork.cuda().eval()
 
