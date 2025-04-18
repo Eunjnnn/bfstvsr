@@ -1,9 +1,7 @@
 __pycache__
 /**/__pycache__/
-/experiments/
 *.png
 /test_img/
-/psnrs/
 /ckpt/
 .DS_Store
 /**/.DS_Store/
