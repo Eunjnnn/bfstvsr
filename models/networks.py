@@ -3,6 +3,7 @@ import models.modules.MoTIF as MoTIF
 import models.modules.ZSM as ZSM
 import models.modules.EDVR as EDVR
 import models.modules.bfstvsr as bfstvsr
+import models.modules.bfstvsr_inference as bfstvsr_inference
 
 
 ####################
@@ -19,6 +20,8 @@ def define_G(opt):
                             back_RBs=opt_net['back_RBs'])   
     elif which_model == 'MoTIF':
         netG = MoTIF.LunaTokis()
+    elif which_model == 'bfstvsr_inference':
+        netG = bfstvsr_inference.LunaTokis() 
     elif which_model == 'bfstvsr' or which_model == 'bfstvsr_w_flow':
         netG = bfstvsr.LunaTokis() 
 

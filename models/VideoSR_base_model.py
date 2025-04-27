@@ -191,6 +191,8 @@ class VideoSRBaseModel(BaseModel):
                     for l in range(3, len(self.times), 3):
                         tmp, flow, flow_GT = self.netG(self.var_L, None, self.times[l:l+3], self.scale, use_GT = False, iter = 4)
                         self.fake_H = torch.cat((self.fake_H,tmp), 0)
+            elif self.net_base == 'bfstvsr_inference':
+                self.fake_H = self.netG(self.var_L, None, self.times, self.scale, use_GT=False, iter=4)
             elif 'bfstvsr' in self.net_base:
                 self.fake_H, flow, flow_GT = self.netG(self.var_L, self.real_H, self.times[:3], self.scale, use_GT = False, iter = 4)
                 if len(self.times) != 3:
